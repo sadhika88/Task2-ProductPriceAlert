@@ -1,6 +1,8 @@
 package Tests;
 
 
+import java.io.IOException;
+
 import org.apache.commons.mail.EmailException;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterClass;
@@ -28,7 +30,7 @@ public class PriceAlert {
 		
 	
 	@Test(priority = 2)
-	public void productSearchtest() throws EmailException, InterruptedException  {
+	public void productSearchtest() throws EmailException, InterruptedException, IOException  {
 		productPriceTrackerPage c=new productPriceTrackerPage(BrowserSetup.driver);
 		int currentprice=c.ProductSearch("MixerGrinder");
 		

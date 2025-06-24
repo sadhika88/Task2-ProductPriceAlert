@@ -1,12 +1,18 @@
 package Pages;
+import java.io.File;
+import java.io.IOException;
+
 import org.apache.commons.mail.Email;
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.SimpleEmail;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.io.FileHandler;
 
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
@@ -14,7 +20,6 @@ import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.aventstack.extentreports.reporter.configuration.Theme;
 public class productPriceTrackerPage {
 	public  WebDriver driver;
-	
 	ExtentReports extent;
 	ExtentTest  test;
 	public productPriceTrackerPage(WebDriver driver) {
@@ -32,7 +37,7 @@ public class productPriceTrackerPage {
 	        
 	}
 
-	public   int ProductSearch(String ItemSearch) throws EmailException {
+	public   int ProductSearch(String ItemSearch) throws EmailException, IOException {
 		 int threshold = 10000;
 	
 		WebElement searchItem=driver.findElement(By.id("twotabsearchtextbox"));
@@ -49,7 +54,12 @@ public class productPriceTrackerPage {
 		 if (currentPrice < threshold) {
 	            sendEmail("Price Drop Alert", "Product price dropped to ₹" + currentPrice + "! Hurry up!");
 	            test.pass("Email sent for price drop to ₹" + currentPrice);
+	            File screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+	            String path = System.getProperty("user.dir") + "/screenshots/price_drop_" + System.currentTimeMillis() + ".png";
+	            FileHandler.copy(screenshot, new File(path));
+	            test.addScreenCaptureFromPath(path, "Price Drop Screenshot");
 	        } else {
+	        
 	            test.info("Price is still above ₹" + threshold);
 	        }
 		 extent.flush();
