@@ -11,7 +11,7 @@ public LoginInPage(WebDriver driver) {
 	this.driver=driver;
 }
 	public  void loginPage(String email,String pwd) {
-		//driver.get("https://www.amazon.in/");
+		
 		WebElement p=driver.findElement(By.xpath("//span[@id='nav-link-accountList-nav-line-1']"));
 		Actions s=new Actions(driver);
 		s.moveToElement(p).build().perform();
